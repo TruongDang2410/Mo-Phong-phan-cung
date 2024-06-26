@@ -1,0 +1,148 @@
+module BAI1 (Y,X);
+output Y;
+input X;
+assign Y = X;
+endmodule
+
+module BAI1 test( output wire (0:0) LEDR, input wire (0:0)SW);
+BAI1 DUT(
+.Y(LEDR[0]), .X(SW[0]));
+endmodule
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+module BAI2A (
+output wire Y,
+input wire A,
+input wire B);
+assign Y = A & B;
+endmodule
+
+
+module BAI2A_test(
+output wire [1:0]LEDR, output wire [0:0]LEDG,
+input wire [1:0]SW);
+assign LEDR[1:0] = SW[1:0]
+BAI2A DUT(
+.Y(LEDG[0]),
+.A(SW[0]),
+.B(SW[1]));
+endmodule
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+module BAI3A (
+output wire SUM,
+output wire CARRY,
+input wire A,
+input wire B);
+assign SUM = A^ B;
+assign CARRY = A & B;
+endmodule
+
+module BAI3A_test(
+output [1:0] LEDR, output [1:0] LEDG,
+input [1:0]SW);
+assign LEDR[1:0] = SW[1:0];
+BAI3A DUT(
+.SUM(LEDG[1]), CARRY (LEDG[0]),
+.A(SW[0]),
+.B(SW[1]));
+endmodule
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+module BAI4A( output reg Q, output wire Qbar, input wire D, input wire clk, input wire rst);
+assign Qbar = ~Q;
+always @(posedge clk)
+begin
+if (~rst)
+Q = 1'b0;
+else
+Q = D;
+end
+endmodule
+
+module BAI4A_test(
+output [0:0] LEDR,
+output [1:0] LEDG,
+input [0:0] SW,
+input [1:0] KEY);
+assign LEDR [0] = SW[0];
+BAI4A DUT (
+.Qbar(LEDG[0]),
+.D(SW[0]),
+.Q(LEDG[1]), 
+.clk(KEY[1]),
+.rst(KEY[0]));
+endmodule
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+module BAI5A(
+output [3:0]Q,
+input clk,
+input rst);
+reg [3:0] value;
+always @(posedge clk) 
+begin
+if(~rst)
+value <= 4'd0;
+else
+value <= value + 4'd1;
+end
+assign Q = value;
+endmodule
+
+module BAI5A_test(
+output [3:0] LEDR,
+output (1:0) LEDG,
+input [1:0] KEY);
+assign LEDG[1:0] = KEY [1:0]
+BAI5A DUT(
+.Q(LEDR[3:0]),
+.clk(KEY[1]),
+.rst(KEY[0]));
+endmodule
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+module BAI6A (
+input wire x, 
+input wire rst, 
+input wire clk, 
+output reg w);
+parameter [2:0] A = 3'b000, B = 3'b001, C = 3'b010, D= 3'b011, E = 3'b100;
+reg [2:0] p_state, n_state; 
+always @(x or p_state) begin: Transitions 
+n_state e = A 
+case (p_state)
+A: 
+if (x== 1' b 1) n _state = B ; 
+else n state = A;
+B:
+if (x == 1'b 1) n _state = B; 
+else n_state = C;
+C: if (x == 1'b 1) n_state = D 
+else n state = A;
+D: if (x == 1'b 1) n_state = E; 
+else n_state = C;
+E: if (x == 1'b 1) n_state = B; 
+else n_state=C
+default: 
+n_state = A 
+endcase
+end
+always @(x or p_state) begin: Outputing
+w= 1'b 0 ;
+w =(p_state==E) ;
+end
+always @(posedge clk) begin: Registering
+if (~rst) p_state=A 
+else p_state=n_state ;
+end
+endmodule
+
+module BAI6A_test(
+output [0:0] LEDG, input [0:0] sw, input [0:1] KEY);
+BAI6A DUT(
+.x (SW[0]),
+.clk (KEY [1]),
+.rst (KEY[0]),
+.w(LEDG[0]));
+endmodule
