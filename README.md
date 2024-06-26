@@ -17,4 +17,4 @@ Phòng thí nghiệm FPGA ảo phục vụ đào tạo và giáo dục kỹ thu�
 -Phần mô phỏng sẽ không được kích hoạt khi có vấn đề về code, vì vậy phần input và output sẽ kh thể thực hiện.
 
 #### Phần đã thực hiện:
--Nhận inputs từ user và xuất outputs sau khi đã xử lý đoạn mã. Outputs sẽ hiển thị thông qua phần giao diện mô phỏng. Inputs là đoạn mã từ Verilog mà user đã nhập. 
+-Giao diện người dùng.
